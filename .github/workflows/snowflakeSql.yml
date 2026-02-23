@@ -1,0 +1,50 @@
+name: createSnowflakeTables
+
+on:
+  push:
+    branches: [ "main1" ]
+
+jobs:
+  snowflake-task:
+    runs-on: ubuntu-latest
+
+    env:
+      SN_USER: UMAN
+      SN_PASS: Ashvath08$GGeethA86$
+      SN_ACCT: VHCWREG-YM73012
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Connector
+        run: pip install snowflake-connector-python
+
+      - name: Run SQL from file in Python Script
+        shell: python
+        run: |
+          import snowflake.connector
+          import os
+
+          # Connect using environment variables
+          conn = snowflake.connector.connect(
+              user=os.getenv('SN_USER'),
+              password=os.getenv('SN_PASS'),
+              account=os.getenv('SN_ACCT'),
+              warehouse='COMPUTE_WH',  # Replace with your WH
+              database='SNOWFLAKE_LEARNING_DB',  # Replace with your DB
+              schema='PUBLIC'  # Replace with your Schema
+          )
+
+          try:
+              with open('createSqlPSA.sql', 'r') as file:
+                  sql = file.read()
+              conn.cursor().execute(sql)
+              print("Success: Table created.")
+          finally:
+              conn.close()
