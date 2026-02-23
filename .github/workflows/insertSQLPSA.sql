@@ -2,7 +2,7 @@ name: createSnowflakeTables
 
 on:
   push:
-    branches: [ "main1" ]
+    branches: [ "main" ]
 
 jobs:
   snowflake-task:
