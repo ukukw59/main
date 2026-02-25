@@ -1,0 +1,8 @@
+sources:
+  - name: Snowukukw
+    database: SNOWFLAKE_LEARNING_DB
+    schema: PUBLIC
+    tables:
+      - name: CANDIDATE  
+
+
