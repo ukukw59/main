@@ -1,10 +1,27 @@
-CREATE TABLE Sitename_Table (
-    Sitename VARCHAR,
-    Uniqueid NUMBER,
-    Existingsites CHAR,
-    ituser1 CHAR,
-    ituser2 CHAR,
-    portalaccessrequired CHAR,
-    fridgecapacity VARCHAR,
-    CONSTRAINT PK_Sitename_Table PRIMARY KEY (Uniqueid)
-)
+CREATE TABLE SITE_ONBOARDING (
+    CHATGPT                  VARCHAR,
+    ID                       NUMBER(10,0),
+    REJECTED                 VARCHAR,
+    REGION_NAME              VARCHAR,
+    REGION_CODE              VARCHAR,
+    ICB                      VARCHAR,
+    PROVIDER_TYPE            VARCHAR,
+    REQUEST_DATE             DATE,
+    PROVIDER_UNIQUE_NAME     VARCHAR,
+    MAIN_ADDRESS             VARCHAR,
+    ALTERNATIVE_ADDRESS      VARCHAR,
+    BRANCH_ODS_CODE          VARCHAR,
+    WILLING_COHORT           VARCHAR,
+    FDP_ACCESS_NEEDED        VARCHAR,
+    LEAD_CONTACT_NAME        VARCHAR,
+    LEAD_CONTACT_PHONE       VARCHAR,
+    LEAD_CONTACT_EMAIL       VARCHAR,
+    ACCESSIBILITY            VARCHAR,
+    USER1_FIRST_NAME         VARCHAR,
+    USER1_LAST_NAME          VARCHAR,
+    USER1_EMAIL              VARCHAR,
+    USER2_FIRST_NAME         VARCHAR,
+    USER2_LAST_NAME          VARCHAR,
+    USER2_EMAIL              VARCHAR,
+    CREATED_BY               VARCHAR
+);
