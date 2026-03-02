@@ -42,7 +42,7 @@ jobs:
           )
 
           try:
-              with open('createSqlPSA.sql', 'r') as file:
+              with open('createallocation.sql', 'r') as file:
                   sql = file.read()
               conn.cursor().execute(sql)
               print("Success: Table created.")
