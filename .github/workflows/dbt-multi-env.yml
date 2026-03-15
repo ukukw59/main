@@ -1,0 +1,121 @@
+name: dbt raw vault multi env
+
+on:
+  workflow_dispatch:
+    inputs:
+      include_prod:
+        description: Include prod deployment path
+        required: false
+        default: "false"
+  push:
+    branches:
+      - main
+
+jobs:
+  run-dev-qa:
+    name: dbt ${{ matrix.env_name }}
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.github_environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - env_name: dev
+            github_environment: dev
+            dbt_target: dev
+            source_schema: PUBLIC_DEV
+            target_schema: RAW_VAULT_DEV
+          - env_name: qa
+            github_environment: qa
+            dbt_target: qa
+            source_schema: PUBLIC_QA
+            target_schema: RAW_VAULT_QA
+
+    env:
+      DBT_TARGET: ${{ matrix.dbt_target }}
+      DBT_SOURCE_DATABASE: SNOWFLAKE_LEARNING_DB
+      DBT_SOURCE_SCHEMA: ${{ matrix.source_schema }}
+      DBT_TARGET_SCHEMA: ${{ matrix.target_schema }}
+      DBT_DATABASE: SNOWFLAKE_LEARNING_DB
+      DBT_WAREHOUSE: COMPUTE_WH
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Print run summary
+        run: |
+          echo "Environment: ${{ matrix.env_name }}"
+          echo "DBT_TARGET: $DBT_TARGET"
+          echo "Source: ${DBT_SOURCE_DATABASE}.${DBT_SOURCE_SCHEMA}.CANDIDATE"
+          echo "Target schema: ${DBT_DATABASE}.${DBT_TARGET_SCHEMA}"
+
+      - name: Install dbt adapter
+        run: pip install dbt-snowflake
+
+      - name: Resolve dbt packages
+        run: dbt deps --profiles-dir .
+
+      - name: Run stage and raw vault
+        run: dbt run --profiles-dir . --target $DBT_TARGET --select stg_candidate hub_candidate sat_candidate
+
+      - name: Test raw vault
+        run: dbt test --profiles-dir . --target $DBT_TARGET --select hub_candidate sat_candidate
+
+  deploy-prod:
+    name: dbt prod
+    runs-on: ubuntu-latest
+    environment: prod
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.include_prod == 'true' &&
+      github.ref_protected == true
+
+    env:
+      DBT_TARGET: prod
+      DBT_SOURCE_DATABASE: SNOWFLAKE_LEARNING_DB
+      DBT_SOURCE_SCHEMA: PUBLIC_PROD
+      DBT_TARGET_SCHEMA: RAW_VAULT_PROD
+      DBT_DATABASE: SNOWFLAKE_LEARNING_DB
+      DBT_WAREHOUSE: COMPUTE_WH
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Print run summary
+        run: |
+          echo "Environment: prod"
+          echo "DBT_TARGET: $DBT_TARGET"
+          echo "Source: ${DBT_SOURCE_DATABASE}.${DBT_SOURCE_SCHEMA}.CANDIDATE"
+          echo "Target schema: ${DBT_DATABASE}.${DBT_TARGET_SCHEMA}"
+
+      - name: Install dbt adapter
+        run: pip install dbt-snowflake
+
+      - name: Resolve dbt packages
+        run: dbt deps --profiles-dir .
+
+      - name: Run stage and raw vault
+        run: dbt run --profiles-dir . --target $DBT_TARGET --select stg_candidate hub_candidate sat_candidate
+
+      - name: Test raw vault
+        run: dbt test --profiles-dir . --target $DBT_TARGET --select hub_candidate sat_candidate

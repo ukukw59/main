@@ -37,18 +37,63 @@ This repo now includes an AutomateDV example for the `SNOWFLAKE_LEARNING_DB.PUBL
 The generated hub uses `EMPID` as the business key. The satellite stores `EMPNAME` and `EMPLOCATION` as descriptive attributes.
 
 The local profile for this repo is stored in `profiles.yml`, so include `--profiles-dir .` when running dbt from this workspace.
-*** Add File: C:\Users\Geetha\main\profiles.yml
-my_new_project:
-  target: dev
-  outputs:
-	 dev:
-		type: snowflake
-		account: VHCWREG-YM73012
-		user: UMAN
-		password: "Ashvath08$GGeethA86$"
-		role:
-		database: SNOWFLAKE_LEARNING_DB
-		warehouse: COMPUTE_WH
-		schema: PUBLIC
-		threads: 4
-		client_session_keep_alive: false
+
+### Run same models in multiple schemas with GitHub Actions
+
+This repository includes a workflow at `.github/workflows/dbt-multi-env.yml` with:
+
+- one matrix job for `dev` and `qa`
+- one separate `prod` job (`deploy-prod`)
+
+- dev: source schema `PUBLIC_DEV`, target schema `RAW_VAULT_DEV`
+- qa: source schema `PUBLIC_QA`, target schema `RAW_VAULT_QA`
+- prod: source schema `PUBLIC_PROD`, target schema `RAW_VAULT_PROD`
+
+Required secrets (set per environment):
+
+- `SNOWFLAKE_ACCOUNT`
+- `SNOWFLAKE_USER`
+- `SNOWFLAKE_PASSWORD`
+- `SNOWFLAKE_ROLE`
+
+Set up environments, separate credentials, and approval gates:
+
+1. Open the GitHub repository.
+2. Go to Settings -> Environments.
+3. Create environment `dev`.
+4. Create environment `qa`.
+5. Create environment `prod`.
+6. Open `dev` -> Environment secrets -> Add the 4 Snowflake secrets for dev.
+7. Open `qa` -> Environment secrets -> Add the 4 Snowflake secrets for qa.
+8. Open `prod` -> Environment secrets -> Add the 4 Snowflake secrets for prod.
+9. For approval gates, in each environment configure Required reviewers.
+10. For `prod`, configure Deployment branches to only protected branches.
+
+How this works in workflow:
+
+- `run-dev-qa` matrix job uses `environment: ${{ matrix.github_environment }}`.
+- `dev` matrix run reads secrets from the `dev` environment.
+- `qa` matrix run reads secrets from the `qa` environment.
+- `deploy-prod` job uses `environment: prod`.
+- `deploy-prod` reads secrets from the `prod` environment.
+- If required reviewers are configured, the job pauses until approval.
+
+Prod strict controls in this workflow:
+
+- Prod is in a separate `deploy-prod` job.
+- Dev and QA run immediately on `push` and on manual dispatch.
+- Prod does not run on `push`.
+- Prod runs only on `workflow_dispatch` when input `include_prod=true`.
+- Prod also requires `github.ref_protected == true`.
+
+How configuration is injected:
+
+- `profiles.yml` reads credentials and target settings from environment variables.
+- `models/sources.yml` reads the source database/schema from environment variables.
+- The workflow matrix sets `DBT_TARGET`, `DBT_SOURCE_SCHEMA`, and `DBT_TARGET_SCHEMA` for each environment.
+
+Run manually from GitHub:
+
+1. Open Actions.
+2. Select `dbt raw vault multi env`.
+3. Click `Run workflow`.

@@ -2,8 +2,8 @@ version: 2
 
 sources:
   - name: raw
-    database: SNOWFLAKE_LEARNING_DB
-    schema: PUBLIC
+    database: "{{ env_var('DBT_SOURCE_DATABASE', 'SNOWFLAKE_LEARNING_DB') }}"
+    schema: "{{ env_var('DBT_SOURCE_SCHEMA', 'PUBLIC') }}"
     tables:
       - name: candidate
         identifier: CANDIDATE
