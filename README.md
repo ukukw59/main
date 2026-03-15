@@ -97,3 +97,29 @@ Run manually from GitHub:
 1. Open Actions.
 2. Select `dbt raw vault multi env`.
 3. Click `Run workflow`.
+
+### Data profiling skill for Candidate Raw Vault
+
+A ready-to-use profiling skill is available at:
+
+- `.github/skills/candidate-raw-vault-profiling/SKILL.md`
+
+SQL templates are available at:
+
+- `.github/skills/candidate-raw-vault-profiling/templates/00_overview_counts.sql`
+- `.github/skills/candidate-raw-vault-profiling/templates/01_source_candidate_profile.sql`
+- `.github/skills/candidate-raw-vault-profiling/templates/02_stg_candidate_profile.sql`
+- `.github/skills/candidate-raw-vault-profiling/templates/03_hub_candidate_profile.sql`
+- `.github/skills/candidate-raw-vault-profiling/templates/04_sat_candidate_profile.sql`
+- `.github/skills/candidate-raw-vault-profiling/templates/05_cross_model_reconciliation.sql`
+- `.github/skills/candidate-raw-vault-profiling/templates/06_7day_trend_profile.sql`
+
+How to use:
+
+1. In Copilot Chat, request profiling for `database`, `source_schema`, and `target_schema`.
+2. Run templates in numeric order after replacing placeholders:
+	- `{{DATABASE}}`
+	- `{{SOURCE_SCHEMA}}`
+	- `{{TARGET_SCHEMA}}`
+	- `{{SAMPLE_LIMIT}}`
+3. Review failed checks first, then reconcile stage, hub, and satellite counts.
