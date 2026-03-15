@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: hub_candidate
+    description: Hub model for candidate business keys loaded from the raw candidate stage table.
+    columns:
+      - name: CANDIDATE_HK
+        description: Hashed business key for the candidate hub.
+        tests:
+          - not_null
+          - unique
+      - name: EMPID
+        description: Business key from the raw candidate stage table.
+        tests:
+          - not_null
+
+  - name: sat_candidate
+    description: Satellite model for candidate descriptive attributes.
+    columns:
+      - name: CANDIDATE_HK
+        description: Parent hash key that links the satellite to the candidate hub.
+        tests:
+          - not_null
+      - name: CANDIDATE_HASHDIFF
+        description: Hashdiff built from candidate descriptive attributes.
+        tests:
+          - not_null

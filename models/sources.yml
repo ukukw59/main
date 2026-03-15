@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    database: SNOWFLAKE_LEARNING_DB
+    schema: PUBLIC
+    tables:
+      - name: candidate
+        identifier: CANDIDATE
