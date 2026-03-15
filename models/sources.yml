@@ -1,8 +1,9 @@
+version: 2
+
 sources:
-  - name: Snowukukw
+  - name: raw
     database: SNOWFLAKE_LEARNING_DB
     schema: PUBLIC
     tables:
-      - name: CANDIDATE  
-
-
+      - name: candidate
+        identifier: CANDIDATE
