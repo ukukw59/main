@@ -1,0 +1,7 @@
+{
+  "exclude_patterns": {
+    "databases": [],
+    "schemas": [],
+    "tables": []
+  }
+}
