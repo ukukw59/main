@@ -1,0 +1,9 @@
+{
+	"name": "adftestuma",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bb5848fe-711c-45e7-8bf2-712bc2b64b69",
+		"tenantId": "d6092ff6-74fc-48f8-9e7f-8f35446c389a"
+	}
+}
