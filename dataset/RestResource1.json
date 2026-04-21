@@ -6,10 +6,10 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"cityname": {
+			"Cityname": {
 				"type": "string"
 			},
-			"apikey": {
+			"Apikey": {
 				"type": "string"
 			}
 		},
