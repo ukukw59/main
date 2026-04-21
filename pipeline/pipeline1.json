@@ -46,8 +46,8 @@
 						"referenceName": "RestResource1",
 						"type": "DatasetReference",
 						"parameters": {
-							"Cityname": "London",
-							"Apikey": "4abdb3c876e1052b587ac27d34f69a49"
+							"CityName": "London",
+							"ApiKey": "4abdb3c876e1052b587ac27d34f69a49"
 						}
 					}
 				],
