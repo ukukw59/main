@@ -1,0 +1,22 @@
+{
+	"name": "AzureBlobStorage1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://weatherblobuma.blob.core.windows.net/",
+			"tenant": "d6092ff6-74fc-48f8-9e7f-8f35446c389a",
+			"servicePrincipalId": "4b824712-4da6-4de5-b18f-6392bfaef912",
+			"servicePrincipalCredentialType": "ServicePrincipalKey",
+			"servicePrincipalCredential": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVaultADF",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sp-sec-ashgeeuma"
+			},
+			"accountKind": "StorageV2"
+		}
+	}
+}
