@@ -1,0 +1,26 @@
+{
+	"name": "RestResource1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestService1Weathermap",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cityname": {
+				"type": "string"
+			},
+			"apikey": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('weather?q=', dataset().CityName, '&appid=', dataset().ApiKey)",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
