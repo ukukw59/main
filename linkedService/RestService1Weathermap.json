@@ -6,7 +6,17 @@
 		"typeProperties": {
 			"url": "https://api.openweathermap.org/data/2.5/",
 			"enableServerCertificateValidation": true,
-			"authenticationType": "Anonymous"
+			"authenticationType": "Anonymous",
+			"authHeaders": {
+				"APIKey": {
+					"type": "AzureKeyVaultSecret",
+					"store": {
+						"referenceName": "AzureKeyVaultADF",
+						"type": "LinkedServiceReference"
+					},
+					"secretName": "weather-apikey"
+				}
+			}
 		}
 	}
 }
