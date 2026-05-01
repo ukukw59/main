@@ -1,0 +1,12 @@
+{
+	"name": "oshttplink",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://api.os.uk/oauth2/token/v1",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
