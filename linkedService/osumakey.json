@@ -1,0 +1,10 @@
+{
+	"name": "osumakey",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://oskeyuma.vault.azure.net/"
+		}
+	}
+}
