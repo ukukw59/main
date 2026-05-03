@@ -1,0 +1,11 @@
+{
+	"name": "twitchblob",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://twitchuma.blob.core.windows.net/",
+			"accountKind": "StorageV2"
+		}
+	}
+}
