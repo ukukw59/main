@@ -1,0 +1,15 @@
+{
+	"name": "twitchrest",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "twitchrest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "games/top"
+		},
+		"schema": []
+	}
+}

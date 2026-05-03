@@ -1,0 +1,20 @@
+{
+	"name": "osblob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "ccod_@{pipeline().RunId}.json",
+				"folderPath": "ccod/@{formatDateTime(utcNow(), 'yyyy/MM/dd')}",
+				"container": "osuma"
+			}
+		},
+		"schema": {}
+	}
+}
