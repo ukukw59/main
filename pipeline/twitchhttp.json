@@ -110,8 +110,46 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET",
+							"additionalHeaders": {
+								"value": "/helix/games/top?first=@{pipeline().parameters.p_top_games_count}",
+								"type": "Expression"
+							},
+							"requestBody": "Authorization: Bearer @{activity('Fetch_TwitchAccessToken').output.access_token}\nClient-Id: @{activity('Get_TwitchClientID').output.value}",
+							"requestTimeout": ""
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "twitchhttp",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "twitchblob",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {

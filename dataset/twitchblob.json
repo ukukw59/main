@@ -1,0 +1,26 @@
+{
+	"name": "twitchblob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "twitchblob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@{pipeline().RunId}.json",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "games/top/@{formatDateTime(utcNow(), 'yyyy/MM/dd')}",
+					"type": "Expression"
+				},
+				"container": "twitchuma"
+			}
+		},
+		"schema": {}
+	}
+}
