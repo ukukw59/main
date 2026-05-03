@@ -1,0 +1,125 @@
+{
+	"name": "twitchhttp",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get_TwitchClientID",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "https://twitchkey.vault.azure.net/secrets/twitchclientid/?api-version=7.0",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get_TwitchClientSecret",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "https://twitchkey.vault.azure.net/secrets/twitchcliientkey/?api-version=7.0",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Fetch_TwitchAccessToken",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Get_TwitchClientID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get_TwitchClientSecret",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": {
+							"value": "application/x-www-form-urlencoded",
+							"type": "Expression"
+						}
+					},
+					"url": "https://id.twitch.tv/oauth2/token",
+					"body": {
+						"value": "client_id=@{activity('Get_TwitchClientID').output.value}&client_secret=@{activity('Get_TwitchClientSecret').output.value}&grant_type=client_credentials",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Copy_TwitchTopGames_to_Blob",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Fetch_TwitchAccessToken",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
+		"parameters": {
+			"p_top_games_count": {
+				"type": "string",
+				"defaultValue": "100"
+			}
+		},
+		"annotations": []
+	}
+}
