@@ -1,0 +1,32 @@
+{
+	"name": "twitchrest",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://api.twitch.tv/helix/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "OAuth2ClientCredential",
+			"clientId": "v7xu5u07ed8vowl6ap4x1wcxajsbfq",
+			"clientSecret": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "twitchkey",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "twitchcliientkey"
+			},
+			"tokenEndpoint": "https://id.twitch.tv/oauth2/token",
+			"authHeaders": {
+				"Client-Id": {
+					"type": "AzureKeyVaultSecret",
+					"store": {
+						"referenceName": "twitchkey",
+						"type": "LinkedServiceReference"
+					},
+					"secretName": "twitchclientid"
+				}
+			}
+		}
+	}
+}
