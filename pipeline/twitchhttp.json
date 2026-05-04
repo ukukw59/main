@@ -115,7 +115,7 @@
 						"storeSettings": {
 							"type": "HttpReadSettings",
 							"requestMethod": "GET",
-							"requestBody": "Authorization: Bearer @{activity('Fetch_TwitchAccessToken').output.access_token}\nClient-Id: @{activity('Get_TwitchClientID').output.value}",
+							"additionalHeaders": "Authorization: Bearer @{activity('Fetch_TwitchAccessToken').output.access_token}\nClient-Id: @{activity('Get_TwitchClientID').output.value}",
 							"requestTimeout": ""
 						},
 						"formatSettings": {
