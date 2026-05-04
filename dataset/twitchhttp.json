@@ -10,7 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "HttpServerLocation",
-				"relativeUrl": "/helix/games/top"
+				"relativeUrl": {
+					"value": "/helix/games/top?first=@{pipeline().parameters.p_top_games_count}",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {}
