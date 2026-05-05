@@ -43,7 +43,7 @@ jobs:
           )
 
           try:
-              with open('SQL/createtwitchtables.sql', 'r') as file:
+              with open('sql/createtwitchtables.sql', 'r') as file:
                   sql = file.read()
               conn.cursor().execute(sql)
               print("Success: Table created.")
