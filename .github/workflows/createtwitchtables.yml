@@ -2,7 +2,7 @@ name: createSnowflakeTwitchTables
 
 on:
   push:
-    branches: [ "main1" ]
+    branches: [ "main" ]
 
 jobs:
   snowflake-task:
@@ -42,7 +42,7 @@ jobs:
           )
 
           try:
-              with open('createtwitchtables.sql', 'r') as file:
+              with open('/SQL/createtwitchtables.sql', 'r') as file:
                   sql = file.read()
               conn.cursor().execute(sql)
               print("Success: Table created.")
