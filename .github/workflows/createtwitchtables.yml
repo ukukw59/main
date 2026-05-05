@@ -43,9 +43,11 @@ jobs:
           )
 
           try:
+              conn.cursor().execute("CREATE SCHEMA IF NOT EXISTS SNOWFLAKE_LEARNING_DB.TWITCH")
               with open('sql/createtwitchtables.sql', 'r') as file:
                   sql = file.read()
-              conn.cursor().execute(sql)
-              print("Success: Table created.")
+              for result in conn.execute_string(sql):
+                  print(f"Success: {result.sfqid}")
+              print("All tables created successfully.")
           finally:
               conn.close()
